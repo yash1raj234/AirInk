@@ -31,11 +31,11 @@ const GLOW: Record<string, string> = {
 };
 
 const STICKERS = [
-  { src: '/stikers/Smile.png', initial: { top: '10%', left: '18%' }, rotate: 'rotate-12' },
-  { src: '/stikers/Star.png', initial: { top: '25%', right: '8%' }, rotate: '-rotate-6' },
-  { src: '/stikers/horn.png', initial: { bottom: '18%', left: '12%' }, rotate: '-rotate-12' },
-  { src: '/stikers/leaf.png', initial: { bottom: '12%', right: '22%' }, rotate: 'rotate-[15deg]' },
-  { src: '/stikers/red-lips.png', initial: { top: '65%', left: '6%' }, rotate: '-rotate-[8deg]' },
+  { src: '/Stikers/Smile.png', initial: { top: '10%', left: '18%' }, rotate: 'rotate-12' },
+  { src: '/Stikers/Star.png', initial: { top: '25%', right: '8%' }, rotate: '-rotate-6' },
+  { src: '/Stikers/horn.png', initial: { bottom: '18%', left: '12%' }, rotate: '-rotate-12' },
+  { src: '/Stikers/leaf.png', initial: { bottom: '12%', right: '22%' }, rotate: 'rotate-[15deg]' },
+  { src: '/Stikers/red-lips.png', initial: { top: '65%', left: '6%' }, rotate: '-rotate-[8deg]' },
 ];
 
 function DraggableSticker({ src, initial, rotate }: { src: string; initial: React.CSSProperties; rotate?: string }) {
