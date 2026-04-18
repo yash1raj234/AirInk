@@ -281,69 +281,107 @@ export default function CameraCanvas({
 
   return (
     <div
-      className="relative rounded-3xl overflow-hidden flex-shrink-0"
+      className="relative rounded-2xl overflow-hidden flex-shrink-0 flex flex-col shadow-2xl bg-white"
       style={{
         width: dims.w,
         height: dims.h,
-        border: '2.5px solid rgba(255, 255, 255, 0.8)',
-        transition: 'border-color 0.4s ease',
+        border: '1px solid rgba(255, 255, 255, 0.2)',
       }}
     >
-      {/* Denied */}
-      {permission === 'denied' && (
-        <div className="absolute inset-0 z-20 flex flex-col items-center justify-center bg-black/80 text-white gap-3">
-          <svg className="w-11 h-11 text-red-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5}
-              d="M15 10l4.553-2.069A1 1 0 0121 8.882v6.236a1 1 0 01-1.447.894L15 14M3 8a2 2 0 012-2h10a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2V8z" />
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M3 3l18 18" />
+      {/* macOS Browser Header */}
+      <div className="flex items-center px-4 py-2.5 gap-4 shrink-0 bg-white">
+        {/* macOS Traffic Lights */}
+        <div className="flex items-center gap-2">
+          <div className="w-3 h-3 rounded-full bg-[#ff5f56] shadow-sm" />
+          <div className="w-3 h-3 rounded-full bg-[#ffbd2e] shadow-sm" />
+          <div className="w-3 h-3 rounded-full bg-[#27c93f] shadow-sm" />
+        </div>
+        
+        {/* Navigation Arrows */}
+        <div className="flex items-center gap-3 text-gray-400">
+          <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+            <path strokeLinecap="round" strokeLinejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
           </svg>
-          <p className="font-semibold">Camera access denied</p>
-          <p className="text-sm text-white/50 text-center px-8">
-            Allow camera access in browser settings and reload.
-          </p>
+          <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+            <path strokeLinecap="round" strokeLinejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+          </svg>
         </div>
-      )}
 
-      {/* Loading */}
-      {permission === 'pending' && (
-        <div className="absolute inset-0 z-20 flex flex-col items-center justify-center bg-black/70 text-white gap-3">
-          <div className="w-9 h-9 border-2 border-white/25 border-t-white rounded-full animate-spin" />
-          <p className="text-sm text-white/60">Waiting for camera…</p>
+        {/* URL Bar */}
+        <div className="flex-1 max-w-2xl mx-auto bg-[#f0f0f0] rounded-md h-7 flex items-center px-3 border border-gray-100">
+           {/* Search Icon */}
+           <svg className="w-3.5 h-3.5 text-gray-400 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+             <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+           </svg>
+           <span className="text-xs text-gray-500 font-medium tracking-wide">airink.dev</span>
         </div>
-      )}
 
-      {/* Webcam — mirrored */}
-      <video
-        ref={videoRef}
-        className="absolute inset-0 w-full h-full object-cover z-0"
-        style={{ transform: 'scaleX(-1)' }}
-        autoPlay playsInline muted
-      />
-
-      {/* Drawing canvas */}
-      <canvas
-        ref={canvasRef}
-        className="absolute inset-0 w-full h-full object-cover z-10"
-        style={{ transform: 'scaleX(-1)', background: 'transparent' }}
-      />
-
-      {/* Draggable Stickers */}
-      {permission === 'granted' && STICKERS.map((s, i) => (
-        <DraggableSticker key={i} src={s.src} initial={s.initial} rotate={s.rotate} />
-      ))}
-
-      {/* Status pill */}
-      {permission === 'granted' && (
-        <div className="absolute top-3 right-3 z-20 flex items-center gap-1.5 frosted-dark px-2.5 py-1 rounded-full">
-          <span
-            className="w-1.5 h-1.5 rounded-full transition-colors duration-200"
-            style={{ background: isDrawing ? '#00FF87' : 'rgba(255,255,255,0.3)' }}
-          />
-          <span className="text-xs text-white/60 select-none">
-            {isDrawing ? 'Drawing' : 'Ready'}
-          </span>
+        {/* Right side dots/icons */}
+        <div className="flex items-center gap-1 text-gray-400">
+           <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+             <path strokeLinecap="round" strokeLinejoin="round" d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z" />
+           </svg>
         </div>
-      )}
+      </div>
+
+      {/* Main Camera Area */}
+      <div className="relative w-full flex-1 bg-black overflow-hidden border-t border-gray-300 dark:border-gray-900 border-opacity-50">
+        {/* Denied */}
+        {permission === 'denied' && (
+          <div className="absolute inset-0 z-20 flex flex-col items-center justify-center bg-black/80 text-white gap-3">
+            <svg className="w-11 h-11 text-red-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5}
+                d="M15 10l4.553-2.069A1 1 0 0121 8.882v6.236a1 1 0 01-1.447.894L15 14M3 8a2 2 0 012-2h10a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2V8z" />
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M3 3l18 18" />
+            </svg>
+            <p className="font-semibold">Camera access denied</p>
+            <p className="text-sm text-white/50 text-center px-8">
+              Allow camera access in browser settings and reload.
+            </p>
+          </div>
+        )}
+
+        {/* Loading */}
+        {permission === 'pending' && (
+          <div className="absolute inset-0 z-20 flex flex-col items-center justify-center bg-black/70 text-white gap-3">
+            <div className="w-9 h-9 border-2 border-white/25 border-t-white rounded-full animate-spin" />
+            <p className="text-sm text-white/60">Waiting for camera…</p>
+          </div>
+        )}
+
+        {/* Webcam — mirrored */}
+        <video
+          ref={videoRef}
+          className="absolute inset-0 w-full h-full object-cover z-0"
+          style={{ transform: 'scaleX(-1)' }}
+          autoPlay playsInline muted
+        />
+
+        {/* Drawing canvas */}
+        <canvas
+          ref={canvasRef}
+          className="absolute inset-0 w-full h-full object-cover z-10"
+          style={{ transform: 'scaleX(-1)', background: 'transparent' }}
+        />
+
+        {/* Draggable Stickers */}
+        {permission === 'granted' && STICKERS.map((s, i) => (
+          <DraggableSticker key={i} src={s.src} initial={s.initial} rotate={s.rotate} />
+        ))}
+
+        {/* Status pill */}
+        {permission === 'granted' && (
+          <div className="absolute top-3 right-3 z-20 flex items-center gap-1.5 frosted-dark px-2.5 py-1 rounded-full border border-white/10 shadow-sm bg-black/30 backdrop-blur-md">
+            <span
+              className="w-1.5 h-1.5 rounded-full transition-colors duration-200"
+              style={{ background: isDrawing ? '#00FF87' : 'rgba(255,255,255,0.4)' }}
+            />
+            <span className="text-xs font-medium text-white/80 select-none">
+              {isDrawing ? 'Drawing' : 'Ready'}
+            </span>
+          </div>
+        )}
+      </div>
     </div>
   );
 }
